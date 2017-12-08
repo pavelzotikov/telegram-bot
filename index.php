@@ -3,7 +3,16 @@
 
 <? require_once 'vendor/autoload.php'; ?>
 
-<? $bot = new \TelegramBot\Api\Client("token"); ?>
+<?
+    if (is_file(sprintf('%s/.env', __DIR__))) {
+	$dotenv = new \Dotenv\Dotenv(__DIR__);
+	$dotenv = $dotenv->load();
+    } else {
+	die("File not found");
+    }
+?>
+
+<? $bot = new \TelegramBot\Api\Client($_SERVER["telegram_bot_token"] ?? ""); ?>
 <?
     $bot->command("ping", function ($message) use ($bot) {
         $bot->sendMessage($message->getChat()->getId(), "pong!");
@@ -15,3 +24,5 @@
 
     $bot->run();
 ?>
+
+<?= 'end' ?>
