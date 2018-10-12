@@ -1,6 +1,24 @@
 {
-    "require": {
-        "telegram-bot/api": "^2.3",
-        "vlucas/phpdotenv": "^2.4"
+  "name": "pavelzotikov/telegram-bot",
+  "description": "Telegram Bot",
+  "keywords": ["telegram-bot", "telegram", "bot"],
+  "license": "MIT",
+  "homepage": "https://github.com/pavelzotikov/telegram-bot",
+  "authors": [
+    {
+      "name": "Pavel Zotikov",
+      "email": "pavelzotikov@gmail.com"
     }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "telegram-bot/api": "^2.3",
+    "ext-memcache": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7"
+  },
+  "autoload": {
+    "psr-0": { "TelegramBot": "src/" }
+  }
 }
