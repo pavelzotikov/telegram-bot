@@ -10,6 +10,8 @@ class Handler
     /** @var array */
     protected $services;
 
+    protected $default_method = 'catcherDefault';
+
     public function execute()
     {
         $this->cache = $this->getCacheInstance();
@@ -27,11 +29,17 @@ class Handler
     public function onCatcher(string $service_name, string $chat_id, string $message)
     {
         $handler_name = $this->getHandlerName();
-        $cache = $this->cache->get(sprintf('Bot:Catcher:%s:%s:%s', $handler_name, $service_name, $chat_id));
+        $active_catcher = $this->cache->get(sprintf('Bot:Catcher:%s:%s:%s', $handler_name, $service_name, $chat_id));
 
-        if ($cache) {
-            $catcher_method = str_replace('command', 'catcher', $cache);
-            return $this->{$catcher_method}($service_name, $chat_id, $message);
+        if ($active_catcher) {
+            $catcher_method = str_replace('command', 'catcher', $active_catcher);
+            if (method_exists($this, $catcher_method)) {
+                return $this->{$catcher_method}($service_name, $chat_id, $message);
+            }
+        }
+
+        if (method_exists($this, $this->default_method)) {
+            return $this->{$this->default_method}($service_name, $chat_id, $message);
         }
     }
 
@@ -43,7 +51,7 @@ class Handler
         if ($handler_name && $method_name) {
 
             $expires_hours = (24 + 3) - (int) date('H');
-            $this->cache->set(sprintf('Bot:Catcher:%s:%s:%s', $handler_name, $service_name, $chat_id), $method_name, null, $expires_hours * 3600);
+            $this->cache->set(sprintf('Bot:Catcher:%s:%s:%s', $handler_name, $service_name, $chat_id), $method_name, 0, $expires_hours * 3600);
         }
         return;
     }
