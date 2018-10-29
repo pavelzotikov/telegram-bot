@@ -43,11 +43,6 @@ class Telegram extends Services
 
                 $message = $update->getMessage();
 
-                if (substr($message->getText(), 0, 1) === '/') {
-                    $this->execute($handler);
-                    return;
-                }
-
                 $response = $handler->onCatcher($service_name, (string) $message->getChat()->getId(), $message->getText());
 
                 $chat_id = (string) $message->getChat()->getId();
