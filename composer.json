@@ -1,5 +1,6 @@
 {
   "name": "pavelzotikov/telegram-bot",
+  "version": "1.0.0",
   "description": "Telegram Bot",
   "keywords": ["telegram-bot", "telegram", "bot"],
   "license": "MIT",
@@ -12,7 +13,7 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "telegram-bot/api": "^2.3",
+    "telegram-bot/api": "^2.5.0",
     "ext-memcache": "*"
   },
   "require-dev": {
